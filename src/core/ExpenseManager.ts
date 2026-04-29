@@ -5,22 +5,6 @@ const STORAGE_KEY = 'expense_manager_data';
 export class ExpenseManager {
     private expenses: Expense[] = [];
 
-
-    loadFromStorage(): void {
-        const storeData = localStorage.getItem(STORAGE_KEY)
-        if (storeData) {
-            try {
-                const parseData = JSON.parse(storeData);
-                this.expenses = parseData
-                console.log('correct upload data!');
-            } catch (error) {
-              console.error('Error to parsing data by localstorage:', error);
-            }
-        } else {
-            console.warn('Not find data on the storage.')
-        }
-    }
-
     constructor(){
         this.loadFromStorage();    
     }
@@ -38,8 +22,13 @@ export class ExpenseManager {
     }
 
     // SAVE ON LOCALSTORAGE
-    private saveToStorage(){
-        const saved = localStorage.getItem("my_expense");
+    private saveToStorage() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.expenses));
+    }
+
+    // LOAD FROM LOCALSTORAGE
+    private loadFromStorage(){
+        const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
             this.expenses = JSON.parse(saved);
         }
