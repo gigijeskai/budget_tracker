@@ -1,14 +1,18 @@
 import type { Category, Expense } from "./core/types";
 import { ExpenseManager } from "./core/ExpenseManager";
+import { initPeriodPicker } from "./feature/dynamic-period-select";
 
-const input = document.getElementById('amount-input') as HTMLInputElement;
 const categorySelect = document.getElementById('category-input') as HTMLSelectElement;
+const expenseList = document.getElementById('expense-list') as HTMLUListElement;
+const totalBalance = document.getElementById('total-balance') as HTMLDivElement;
+const input = document.getElementById('amount-input') as HTMLInputElement;
 const addButton = document.getElementById('add-btn') as HTMLButtonElement;
-const expenseList = document.querySelector('#expense-list') as HTMLUListElement;
-const totalBalance = document.getElementById('total-display') as HTMLDivElement;
+
 const expense = new ExpenseManager();
 
 window.addEventListener('DOMContentLoaded', () => {
+
+    initPeriodPicker();
     renderList();
     renderTotal();
 });
@@ -23,13 +27,18 @@ addButton.addEventListener('click', () => {
     renderTotal();
 });
 
+const buildExpenseItem = (exp: Expense): HTMLLIElement => {
+    const li = document.createElement('li');
+    li.textContent = `${exp.category}: €${exp.amount.toFixed(2)} - ${new Date(exp.date).toLocaleDateString()}`;
+    return li;
+}
+
 const renderList = () => {
 
 const expenses = expense.getExpenses();
 expenseList.innerHTML = '';
 expenses.forEach((exp: Expense) => {
-    const li = document.createElement('li');
-    li.textContent = `${exp.category}: €${exp.amount.toFixed(2)} - ${new Date(exp.date).toLocaleDateString()}`;
+    const li = buildExpenseItem(exp);
     expenseList.appendChild(li);
 });
 

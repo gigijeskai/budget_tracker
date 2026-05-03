@@ -34,7 +34,7 @@ export class ExpenseManager {
         }
     }
 
-    // GET ALL EXPENSE
+    // GET ALL EXPENSES
     getExpenses() {
         return[...this.expenses];
     }
@@ -43,4 +43,6 @@ export class ExpenseManager {
     getTotal(): number {
         return this.expenses.reduce((acc, curr) => acc + curr.amount, 0)
     }
+
 }
+   
