@@ -1,51 +1,23 @@
-import type { Category, Expense } from "./core/types";
-import { ExpenseManager } from "./core/ExpenseManager";
+import { ExpenseStore } from "./core/ExpenseStore";
 import { initPeriodPicker } from "./feature/dynamic-period-select";
+import { initAddExpense } from "./feature/add-expense";
+import { renderList } from "./ui/render-list";
+import { renderTotal } from "./ui/render-total";
 
-const categorySelect = document.getElementById('category-input') as HTMLSelectElement;
-const expenseList = document.getElementById('expense-list') as HTMLUListElement;
-const totalBalance = document.getElementById('total-balance') as HTMLDivElement;
-const input = document.getElementById('amount-input') as HTMLInputElement;
-const addButton = document.getElementById('add-btn') as HTMLButtonElement;
+const expenseManager = new ExpenseStore();
 
-const expense = new ExpenseManager();
+const render = () => {
+    renderList(expenseManager);
+    renderTotal(expenseManager);
+}
 
 window.addEventListener('DOMContentLoaded', () => {
 
+    initAddExpense(expenseManager, render);
     initPeriodPicker();
-    renderList();
-    renderTotal();
+
+    render();
 });
 
-addButton.addEventListener('click', () => {
-    const amount: number = parseFloat(input.value);
-    const category = categorySelect.value as Category;
 
-    expense.addExpense(amount, category);
-    input.value = '';
-    renderList();
-    renderTotal();
-});
 
-const buildExpenseItem = (exp: Expense): HTMLLIElement => {
-    const li = document.createElement('li');
-    li.textContent = `${exp.category}: €${exp.amount.toFixed(2)} - ${new Date(exp.date).toLocaleDateString()}`;
-    return li;
-}
-
-const renderList = () => {
-
-const expenses = expense.getExpenses();
-expenseList.innerHTML = '';
-expenses.forEach((exp: Expense) => {
-    const li = buildExpenseItem(exp);
-    expenseList.appendChild(li);
-});
-
-}
-
-const renderTotal = () => {
-    
-    const total = expense.getTotal();
-    totalBalance.textContent = `Total: €${total.toFixed(2)}`;
-}

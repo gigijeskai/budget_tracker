@@ -7,7 +7,7 @@ export function initPeriodPicker() {
   const next = document.getElementById("next-period") as HTMLButtonElement;
   const tabs = document.querySelectorAll(".period-tab") as NodeListOf<HTMLDivElement>;
 
-  function getWeekNumber(date) {
+  function getWeekNumber(date: any) {
     const d: any = new Date(Date.UTC(
       date.getFullYear(),
       date.getMonth(),
