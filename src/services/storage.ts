@@ -1,0 +1,15 @@
+import type { Expense } from "../core/types";
+
+const STORAGE_KEY = "expense_manager_data";
+
+export function loadExpenses(): Expense[] {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  return saved ? JSON.parse(saved) : [];
+}
+
+export function saveExpenses(expenses: Expense[]) {
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(expenses)
+  );
+}
