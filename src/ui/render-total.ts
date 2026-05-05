@@ -1,7 +1,5 @@
-import { ExpenseStore } from "../core/ExpenseStore";
+export function renderTotal(amount : number) {
+    const display = document.getElementById('total-display') as HTMLDivElement;
 
-export function renderTotal(manager: ExpenseStore) {
-    const total = document.getElementById('total-display') as HTMLDivElement;
-
-    total.textContent = `Total: €${manager.getTotal().toFixed(2)}`;
+if (display) display.textContent = `Total: €${amount.toFixed(2)}`;
 }

@@ -1,13 +1,15 @@
-import { ExpenseStore } from "../core/ExpenseStore";
+import type { Expense } from "../core/types";
 
-export function renderList(manager: ExpenseStore) {
-    const list = document.getElementById('expense-list') as HTMLUListElement;
+export const renderList = (expenses: Expense[]) => {
+    const listElement = document.getElementById('expense-list') as HTMLUListElement;
 
-    list.innerHTML = '';
+    if (!listElement) return;
 
-    manager.getExpenses().forEach(exp => {
-        const li = document.createElement('li');
-        li.textContent = `${exp.category}: €${exp.amount.toFixed(2)} - ${new Date(exp.date).toLocaleDateString()}`;
-        list.appendChild(li);
+    listElement.innerHTML = '';
+
+    expenses.forEach((expense) => {
+        const item = document.createElement('li');
+        item.textContent = `${expense.category}: €${expense.amount.toFixed(2)}`;
+        listElement.appendChild(item);
     });
-}
+};
