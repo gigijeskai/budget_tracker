@@ -1,4 +1,6 @@
-export function initPeriodPicker() {
+import { ExpenseStore } from "../core/ExpenseStore";
+
+export function initPeriodPicker(manager: ExpenseStore) {
   let mode = "day";
   let currentDate = new Date();
 
@@ -90,6 +92,11 @@ export function initPeriodPicker() {
       mode = tab.dataset.mode;
       updatePeriodLabel();
     });
+  });
+
+  manager.subscribe(() => {
+    // This will trigger a re-render of the list and total, but we also want to update the period label in case it depends on the current date
+    updatePeriodLabel();
   });
 
   updatePeriodLabel();
