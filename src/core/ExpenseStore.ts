@@ -1,10 +1,11 @@
 import type { Expense, Category } from "./types";
-
+import { loadExpenses, saveExpenses } from "../services/storage";
+ 
 export class ExpenseStore {
   private expenses: Expense[];
   private subscribers: (() => void)[] = [];
 
-  constructor(initialExpenses: Expense[] = [] ) {
+  constructor(initialExpenses: Expense[] = loadExpenses()) {
     this.expenses = initialExpenses;
   }
 
@@ -26,7 +27,7 @@ export class ExpenseStore {
       category,
       date: Date.now(),
     };
-
+    saveExpenses([...this.expenses, expense]);
     this.expenses = [...this.expenses, expense];
     this.notify();
   }
