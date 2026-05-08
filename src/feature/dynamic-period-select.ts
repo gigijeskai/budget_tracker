@@ -1,4 +1,7 @@
 import { ExpenseStore } from "../core/ExpenseStore";
+import { filterByRange } from "../utils/filter-by-range";   
+import { renderList } from "../ui/render-list";
+import { renderTotal } from "../ui/render-total";   
 
 export function initPeriodPicker(manager: ExpenseStore) {
   let mode = "day";
@@ -55,9 +58,17 @@ export function initPeriodPicker(manager: ExpenseStore) {
         label.textContent = "All Time";
         break;
     }
-
     prev.disabled = mode === "total";
     next.disabled = mode === "total";
+
+    const filtered = filterByRange(
+      manager.getExpenses(),
+      mode,
+      currentDate
+    );
+    renderList(filtered);
+    renderTotal(filtered.reduce((sum, exp) => sum + exp.amount, 0));
+    
   }
 
   function movePeriod(step) {
@@ -77,12 +88,20 @@ export function initPeriodPicker(manager: ExpenseStore) {
       case "total":
         return;
     }
-
     updatePeriodLabel();
   }
 
+    label.textContent = new Date().toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+    updatePeriodLabel();
+  
+
   prev.addEventListener("click", () => movePeriod(-1));
   next.addEventListener("click", () => movePeriod(1));
+  
 
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
@@ -93,11 +112,9 @@ export function initPeriodPicker(manager: ExpenseStore) {
       updatePeriodLabel();
     });
   });
-
-  manager.subscribe(() => {
-    // This will trigger a re-render of the list and total, but we also want to update the period label in case it depends on the current date
-    updatePeriodLabel();
-  });
-
+  console.log('[PeriodPicker] mode:', mode);
+console.log('[PeriodPicker] expenses:', manager.getExpenses().length);
+updatePeriodLabel();
   updatePeriodLabel();
+  manager.subscribe(updatePeriodLabel);
 }
