@@ -45,6 +45,21 @@ button {
   cursor: pointer;
 }
 
+.delete-btn {
+  background: transparent;
+  color: red;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.2rem;
+  border: #dc2626 solid 2px;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+  color: var(--card);
+}
+
+
 .history { margin-top: 2rem; }
 ul { list-style: none; padding: 0; }
 li {

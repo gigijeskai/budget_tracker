@@ -66,7 +66,7 @@ export function initPeriodPicker(manager: ExpenseStore) {
       mode,
       currentDate
     );
-    renderList(filtered);
+    renderList(filtered, (id) => manager.deleteExpense(id));
     renderTotal(filtered.reduce((sum, exp) => sum + exp.amount, 0));
     
   }
@@ -112,9 +112,7 @@ export function initPeriodPicker(manager: ExpenseStore) {
       updatePeriodLabel();
     });
   });
-  console.log('[PeriodPicker] mode:', mode);
-console.log('[PeriodPicker] expenses:', manager.getExpenses().length);
 updatePeriodLabel();
   updatePeriodLabel();
-  manager.subscribe(updatePeriodLabel);
+  manager.subscribe(updatePeriodLabel);  
 }
