@@ -1,11 +1,10 @@
 import type { Expense, Category } from "./types";
-import { loadExpenses, saveExpenses } from "../services/storage";
  
 export class ExpenseStore {
   private expenses: Expense[];
   private subscribers: (() => void)[] = [];
 
-  constructor(initialExpenses: Expense[] = loadExpenses()) {
+  constructor(initialExpenses: Expense[] = []) {
     this.expenses = initialExpenses;
   }
 
@@ -27,7 +26,7 @@ export class ExpenseStore {
       category,
       date: Date.now(),
     };
-    saveExpenses([...this.expenses, expense]);
+    [...this.expenses, expense];
     this.expenses = [...this.expenses, expense];
     this.notify();
   }
@@ -41,5 +40,10 @@ export class ExpenseStore {
       (sum, expense) => sum + expense.amount,
       0
     );
+  }
+  
+  deleteExpense(id: string) {
+    this.expenses = this.expenses.filter((expense) => expense.id !== id);
+    this.notify();
   }
 }
