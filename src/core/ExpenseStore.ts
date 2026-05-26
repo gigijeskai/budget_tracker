@@ -41,6 +41,13 @@ export class ExpenseStore {
       0
     );
   }
+
+  editExpense(id: string, amount: number, category: Category) {
+    this.expenses = this.expenses.map((expense) =>
+      expense.id === id ? { ...expense, amount, category } : expense
+    );
+    this.notify();
+  }
   
   deleteExpense(id: string) {
     this.expenses = this.expenses.filter((expense) => expense.id !== id);

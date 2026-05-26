@@ -66,7 +66,7 @@ export function initPeriodPicker(manager: ExpenseStore) {
       mode,
       currentDate
     );
-    renderList(filtered, (id) => manager.deleteExpense(id));
+    renderList(filtered);
     renderTotal(filtered.reduce((sum, exp) => sum + exp.amount, 0));
     
   }

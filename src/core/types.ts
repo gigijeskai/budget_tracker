@@ -1,4 +1,4 @@
-export type Category = "Food" | "Tranport" | "Entertainment";
+export type Category = "Food" | "Tranport" | "Entertainment" | "Utilities" | "Health" | "Education" | "Other" | "Test";
 
 export type Timeframe = 'today' | 'week' | 'month' | 'year' | 'all';
 
