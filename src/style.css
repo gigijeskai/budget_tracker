@@ -181,3 +181,19 @@ li {
   color: var(--accent);
   letter-spacing: .3px;
 }
+
+.view-content.is-hidden {
+    display: none !important;
+}
+
+.view-tab.active {
+    background-color: #007bff; 
+    color: white;
+    font-weight: bold;
+}
+
+.chart-container {
+  position : relative;
+  height: 40vh;
+  width: 80vw;
+}

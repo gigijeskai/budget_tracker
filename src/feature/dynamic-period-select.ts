@@ -2,6 +2,7 @@ import { ExpenseStore } from "../core/ExpenseStore";
 import { filterByRange } from "../utils/filter-by-range";
 import { renderList } from "../ui/render-list";
 import { renderTotal } from "../ui/render-total";
+import { renderChart } from "../ui/render-chart";
 
 export function initPeriodPicker(manager: ExpenseStore) {
   let mode = "day";
@@ -68,6 +69,7 @@ export function initPeriodPicker(manager: ExpenseStore) {
     );
     renderList(filtered);
     renderTotal(filtered.reduce((sum, exp) => sum + exp.amount, 0));
+    renderChart(filtered);
   }
 
   function movePeriod(step) {
