@@ -26,7 +26,6 @@ export class ExpenseStore {
       category,
       date: Date.now(),
     };
-    [...this.expenses, expense];
     this.expenses = [...this.expenses, expense];
     this.notify();
   }
@@ -51,6 +50,11 @@ export class ExpenseStore {
   
   deleteExpense(id: string) {
     this.expenses = this.expenses.filter((expense) => expense.id !== id);
+    this.notify();
+  }
+
+  importAllExpenses(newExpenses: Expense[]) {
+    this.expenses = [...newExpenses];
     this.notify();
   }
 }
