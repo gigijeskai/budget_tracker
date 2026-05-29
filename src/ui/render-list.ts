@@ -1,4 +1,4 @@
-import type { Expense, Category } from "../core/types";
+import type { Expense } from "../core/types";
 
 export const renderList = (expenses: Expense[]) => {
     const listElement = document.getElementById('expense-list') as HTMLUListElement;
@@ -24,7 +24,6 @@ export const renderList = (expenses: Expense[]) => {
         btnDelete.textContent = '🗑️';
         btnDelete.classList.add('delete-btn');
         btnDelete.dataset.id = expense.id;
-        item.appendChild(btnDelete);
-        
+        item.appendChild(btnDelete);        
     });
 };

@@ -1,7 +1,7 @@
 import { ExpenseStore } from "../core/ExpenseStore";
-import { filterByRange } from "../utils/filter-by-range";   
+import { filterByRange } from "../utils/filter-by-range";
 import { renderList } from "../ui/render-list";
-import { renderTotal } from "../ui/render-total";   
+import { renderTotal } from "../ui/render-total";
 
 export function initPeriodPicker(manager: ExpenseStore) {
   let mode = "day";
@@ -22,7 +22,7 @@ export function initPeriodPicker(manager: ExpenseStore) {
     const dayNum = d.getUTCDay() || 7;
     d.setUTCDate(d.getUTCDate() + 4 - dayNum);
 
-    const yearStart: any  = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const yearStart: any = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
 
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
   }
@@ -68,7 +68,6 @@ export function initPeriodPicker(manager: ExpenseStore) {
     );
     renderList(filtered);
     renderTotal(filtered.reduce((sum, exp) => sum + exp.amount, 0));
-    
   }
 
   function movePeriod(step) {
@@ -91,17 +90,17 @@ export function initPeriodPicker(manager: ExpenseStore) {
     updatePeriodLabel();
   }
 
-    label.textContent = new Date().toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    });
-    updatePeriodLabel();
-  
+  label.textContent = new Date().toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+  updatePeriodLabel();
+
 
   prev.addEventListener("click", () => movePeriod(-1));
   next.addEventListener("click", () => movePeriod(1));
-  
+
 
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
@@ -109,10 +108,8 @@ export function initPeriodPicker(manager: ExpenseStore) {
       tab.classList.add("active");
 
       mode = tab.dataset.mode;
-      updatePeriodLabel();
     });
   });
-updatePeriodLabel();
-  updatePeriodLabel();
-  manager.subscribe(updatePeriodLabel);  
+  manager.subscribe(updatePeriodLabel);
+
 }
