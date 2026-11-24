@@ -3,6 +3,7 @@ import { initPeriodPicker } from "./feature/dynamic-period-select";
 import { initEditExpense } from "./feature/init-edit-expense";
 import { loadExpenses, saveExpenses } from "./services/storage";
 import { initExportExpense } from "./feature/init-export-expense";
+import { initViewSwitcher } from "./feature/view-switcher";
 
 const saveData = loadExpenses();
 const store = new ExpenseStore(saveData);
@@ -15,10 +16,9 @@ store.subscribe(() => {
 initPeriodPicker(store);
 initEditExpense(store);
 initExportExpense(() => store.getExpenses());
+initViewSwitcher();
 
 store.notify();
-
-
 
 
 

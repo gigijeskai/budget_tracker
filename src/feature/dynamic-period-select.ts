@@ -2,6 +2,8 @@ import { ExpenseStore } from "../core/ExpenseStore";
 import { filterByRange } from "../utils/filter-by-range";
 import { renderList } from "../ui/render-list";
 import { renderTotal } from "../ui/render-total";
+import { renderChart } from "../ui/render-chart";
+import { renderSummary } from "../ui/render-summary";
 
 export function initPeriodPicker(manager: ExpenseStore) {
   let mode = "day";
@@ -12,19 +14,28 @@ export function initPeriodPicker(manager: ExpenseStore) {
   const next = document.getElementById("next-period") as HTMLButtonElement;
   const tabs = document.querySelectorAll(".period-tab") as NodeListOf<HTMLDivElement>;
 
-  function getWeekNumber(date: any) {
-    const d: any = new Date(Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    ));
+  function getWeekNumber(date: Date) {
+    const d = new Date(
+      Date.UTC(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+      )
+    );
 
     const dayNum = d.getUTCDay() || 7;
-    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
 
-    const yearStart: any = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    d.setUTCDate(
+      d.getUTCDate() + 4 - dayNum
+    );
 
-    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    const yearStart = new Date(
+      Date.UTC(d.getUTCFullYear(), 0, 1)
+    );
+
+    return Math.ceil(
+      (((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7
+    );
   }
 
   function updatePeriodLabel() {
@@ -58,6 +69,7 @@ export function initPeriodPicker(manager: ExpenseStore) {
         label.textContent = "All Time";
         break;
     }
+
     prev.disabled = mode === "total";
     next.disabled = mode === "total";
 
@@ -66,50 +78,76 @@ export function initPeriodPicker(manager: ExpenseStore) {
       mode,
       currentDate
     );
+
     renderList(filtered);
-    renderTotal(filtered.reduce((sum, exp) => sum + exp.amount, 0));
+
+    renderTotal(
+      filtered.reduce(
+        (sum, expense) => sum + expense.amount,
+        0
+      )
+    );
+
+    renderSummary(filtered);
+    renderChart(filtered);
   }
 
-  function movePeriod(step) {
+  function movePeriod(step: number) {
     switch (mode) {
       case "day":
-        currentDate.setDate(currentDate.getDate() + step);
+        currentDate.setDate(
+          currentDate.getDate() + step
+        );
         break;
+
       case "week":
-        currentDate.setDate(currentDate.getDate() + step * 7);
+        currentDate.setDate(
+          currentDate.getDate() + step * 7
+        );
         break;
+
       case "month":
-        currentDate.setMonth(currentDate.getMonth() + step);
+        currentDate.setMonth(
+          currentDate.getMonth() + step
+        );
         break;
+
       case "year":
-        currentDate.setFullYear(currentDate.getFullYear() + step);
+        currentDate.setFullYear(
+          currentDate.getFullYear() + step
+        );
         break;
+
       case "total":
         return;
     }
+
     updatePeriodLabel();
   }
 
-  label.textContent = new Date().toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  });
   updatePeriodLabel();
 
+  prev.addEventListener("click", () => {
+    movePeriod(-1);
+  });
 
-  prev.addEventListener("click", () => movePeriod(-1));
-  next.addEventListener("click", () => movePeriod(1));
-
+  next.addEventListener("click", () => {
+    movePeriod(1);
+  });
 
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
-      tabs.forEach(t => t.classList.remove("active"));
+      tabs.forEach(t => {
+        t.classList.remove("active");
+      });
+
       tab.classList.add("active");
 
-      mode = tab.dataset.mode;
+      mode = tab.dataset.mode ?? "day";
+
+      updatePeriodLabel();
     });
   });
-  manager.subscribe(updatePeriodLabel);
 
+  manager.subscribe(updatePeriodLabel);
 }

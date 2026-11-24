@@ -46,8 +46,26 @@
 
     <section class="history">
       <h3>Recent Transactions</h3>
+
+      <div class="view-switcher">
+    <button id="btn-show-list" class="view-tab active">Transactions</button>
+    <button id="btn-show-summary" class="view-tab">Summary</button>
+    <button id="btn-show-chart" class="view-tab">Chart</button>
+</div>
+
+<div id="container-list" class="view-content">
       <ul id="expense-list"></ul>
+      </div>
+      <div id="container-summary" class="view-content is-hidden">
+    <div id="summary-list"></div>
+</div>
+<div id="container-chart" class="view-content is-hidden">
+      <div class="chart-container" >
+    <canvas id="expense-chart"></canvas>
+</div>
+</div>
     </section>
+    
   </div>
   <script type="module" src="/src/main.ts"></script>
 </body>
